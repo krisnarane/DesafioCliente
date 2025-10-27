@@ -120,6 +120,69 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:5051/api/clientes?pagina=1&tamanhoPagina=10",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5051/api/clientes?pagina=1&tamanhoPagina=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"clientes"
+					],
+					"query": [
+						{
+							"key": "pagina",
+							"value": "1"
+						},
+						{
+							"key": "tamanhoPagina",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5051/api/clientes/pesquisar?nome=João",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5051/api/clientes/pesquisar?nome=João",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"clientes",
+						"pesquisar"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "João"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
