@@ -247,6 +247,7 @@ A seguir, apresentamos os testes manuais realizados via **Swagger** para comprov
 
 ---
 
+
 ### 1. 📝 Criação de Cliente (POST)
 **Regra Principal**: Ao enviar um novo cliente apenas com **CEP** e **Número**, a API consulta o **ViaCEP** e preenche automaticamente o **Logradouro** e a **Cidade** antes de salvar.
 
@@ -256,32 +257,50 @@ A seguir, apresentamos os testes manuais realizados via **Swagger** para comprov
 
 ---
 
-### 2. 🔍 Consulta de Cliente (GET por ID)
+### 2. 🔍 Consulta de Cliente por ID (GET)
 A consulta pelo ID do cliente criado retorna os dados completos, incluindo o **endereço preenchido automaticamente pelo ViaCEP**.
 
 **Endpoint**: `GET /api/clientes/{id}`
 
-![Consulta de Cliente](./images/get.png)
+![Consulta de Cliente por ID](./images/get.png)
 
 ---
 
-### 3. ✏️ Atualização de Cliente (PUT)
+### 3. 🔎 Busca de Clientes por Nome (GET)
+Permite buscar clientes através de um filtro por nome (busca parcial).
+
+**Endpoint**: `GET /api/clientes/pesquisar?nome={termo}`
+
+![Busca por Nome](./images/pesquisa.png)
+
+---
+
+### 4. 📋 Listagem Paginada de Clientes (GET)
+Retorna todos os clientes com suporte a paginação para melhor performance.
+
+**Endpoint**: `GET /api/clientes?pagina=1&tamanhoPagina=10`
+
+![Listagem Paginada](./images/list.png)
+
+---
+
+### 5. ✏️ Atualização de Cliente (PUT)
 A API permite a atualização dos dados de um cliente existente, mantendo a validação e integração com ViaCEP.
 
 **Endpoint**: `PUT /api/clientes/{id}`
 
-![Atualização de Cliente](./images/put.png)
+![Atualização de Cliente](./images/putendpoint.png)
 
 ---
 
-### 4. 🗑️ Exclusão de Cliente (DELETE)
+### 6. 🗑️ Exclusão de Cliente (DELETE)
 A API permite a exclusão de um cliente pelo seu ID, removendo também seus endereços e contatos (cascade delete).
 
 **Endpoint**: `DELETE /api/clientes/{id}`
 
-![Exclusão de Cliente](./images/delete.png)
+![Exclusão de Cliente](./images/deletendpoint.png)
 
-
+---
 ---
 ## Diferenciais Implementados
 
