@@ -289,7 +289,7 @@ A API permite a atualização dos dados de um cliente existente, mantendo a vali
 
 **Endpoint**: `PUT /api/clientes/{id}`
 
-![Atualização de Cliente](./images/putendpoint.png)
+![Atualização de Cliente](./images/atualizando.png)
 
 ---
 
@@ -298,9 +298,8 @@ A API permite a exclusão de um cliente pelo seu ID, removendo também seus ende
 
 **Endpoint**: `DELETE /api/clientes/{id}`
 
-![Exclusão de Cliente](./images/deletendpoint.png)
+![Exclusão de Cliente](./images/deletando.png)
 
----
 ---
 ## Diferenciais Implementados
 
