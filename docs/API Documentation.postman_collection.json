@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "a1e5d9be-426f-4f12-a8f3-1f6e6fe1e890",
+		"name": "API Documentation",
+		"description": "API desenvolvida para gerenciar o cadastro completo de clientes, incluindo informações pessoais, endereços (com integração automática ao ViaCEP) e múltiplos contatos.EndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43586873",
+		"_collection_link": "https://jula-6045524.postman.co/workspace/DesafioAPIMuralis~79caa53a-e507-4786-b389-1ea2f48f8a4b/collection/43586873-a1e5d9be-426f-4f12-a8f3-1f6e6fe1e890?action=share&source=collection_link&creator=43586873"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5051/api/Clientes",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"João Silva\",\r\n  \"endereco\": {\r\n    \"cep\": \"01310-100\",\r\n    \"numero\": \"1000\",\r\n    \"complemento\": \"Apto 101\"\r\n  },\r\n  \"contatos\": [\r\n    {\r\n      \"tipo\": \"Email\",\r\n      \"texto\": \"joao@example.com\"\r\n    },\r\n    {\r\n      \"tipo\": \"Telefone\",\r\n      \"texto\": \"(11) 98765-4321\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5051/api/Clientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"Clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5051/api/Clientes/5",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5051/api/Clientes/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"Clientes",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5051/api/Clientes/5",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nome\": \"João Silva Santos\",\r\n  \"endereco\": {\r\n    \"cep\": \"01310-100\",\r\n    \"numero\": \"1000\",\r\n    \"complemento\": \"Apto 102\"\r\n  },\r\n  \"contatos\": [\r\n    {\r\n      \"tipo\": \"Email\",\r\n      \"texto\": \"joao.santos@example.com\"\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5051/api/Clientes/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"Clientes",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5051/api/Clientes/5",
+			"request": {
+				"auth": {
+					"type": "inherit"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5051/api/Clientes/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5051",
+					"path": [
+						"api",
+						"Clientes",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
