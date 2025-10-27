@@ -15,17 +15,17 @@
 - [Sobre o Projeto](#-sobre-o-projeto)
 - [Stack Utilizada](#-stack-utilizada)
 - [Arquitetura e Padrões](#-arquitetura-e-padrões)
-- [Diferenciais Implementados](#-diferenciais-implementados)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Funcionalidades](#-funcionalidades)
 - [Como Executar](#-como-executar)
-- [Endpoints da API](#-endpoints-da-api)
+- [Demonstração da API](#-demonstracao-da-api)
+- [Diferenciais Implementados](#-diferenciais-implementados)
 
 ---
 
 ## Sobre o Projeto
 
-API desenvolvida para gerenciar o cadastro completo de clientes, incluindo informações pessoais, endereços (com integração automática ao ViaCEP) e múltiplos contatos. O projeto foi estruturado seguindo os princípios da **Clean Architecture** e **SOLID**, garantindo escalabilidade, manutenibilidade e testabilidade.
+- API desenvolvida para gerenciar o cadastro completo de clientes, incluindo informações pessoais, endereços (com integração automática ao ViaCEP) e múltiplos contatos. O projeto foi estruturado seguindo os princípios da **Clean Architecture** e **SOLID**, garantindo escalabilidade, manutenibilidade e testabilidade.
 ---
 
 ## Stack Utilizada
@@ -237,7 +237,7 @@ Abra o navegador em: **`https://localhost:5051/swagger`** (a porta será exibida
 
 ---
 
-## 📸 Demonstração da API
+## Demonstração da API
 
 A seguir, apresentamos os testes manuais realizados via **Swagger** para comprovar o funcionamento da API.
 
