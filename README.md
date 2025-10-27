@@ -26,16 +26,6 @@
 ## Sobre o Projeto
 
 API desenvolvida para gerenciar o cadastro completo de clientes, incluindo informações pessoais, endereços (com integração automática ao ViaCEP) e múltiplos contatos. O projeto foi estruturado seguindo os princípios da **Clean Architecture** e **SOLID**, garantindo escalabilidade, manutenibilidade e testabilidade.
-
-### Principais Características
-
-✅ **CRUD completo** de clientes  
-✅ **Paginação** de resultados  
-✅ **Integração com API ViaCEP** para preenchimento automático de endereços  
-✅ **Validações robustas** com FluentValidation  
-✅ **Documentação interativa** com Swagger  
-✅ **Separação de responsabilidades** em camadas bem definidas  
-
 ---
 
 ## Stack Utilizada
@@ -113,98 +103,6 @@ O projeto segue os princípios da **Clean Architecture**, dividido em 4 camadas 
 - Validações declarativas com FluentValidation
 - Código limpo e legível
 - Mensagens de erro personalizadas
-
----
-
-## Diferenciais Implementados
-
-### 1. **Integração com API Externa (ViaCEP)**
-```csharp
-// Preenchimento automático de endereço a partir do CEP
-public async Task<ViaCepResponseDTO?> ObterEnderecoPorCepAsync(string cep)
-{
-    var cepLimpo = cep.Replace("-", "").Trim();
-    var response = await _httpClient.GetAsync($"ws/{cepLimpo}/json/");
-    // ...
-}
-```
-- HttpClient configurado como serviço tipado
-- Tratamento de erros e CEPs inválidos
-- Merge inteligente: dados do usuário têm prioridade sobre ViaCEP
-
-### 2. **Paginação de Resultados**
-```csharp
-public class PagedResultDTO<T>
-{
-    public IEnumerable<T> Items { get; set; }
-    public int TotalItems { get; set; }
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
-    public int TotalPages => (int)Math.Ceiling(TotalItems / (double)PageSize);
-}
-```
-- Evita sobrecarga de dados
-- Cálculo automático de total de páginas
-- Parâmetros configuráveis via query string
-
-### 3. **Validações Robustas**
-```csharp
-public class CriarClienteValidator : AbstractValidator<CriarClienteDTO>
-{
-    public CriarClienteValidator()
-    {
-        RuleFor(x => x.Nome)
-            .NotEmpty().WithMessage("Nome é obrigatório")
-            .MinimumLength(3).WithMessage("Nome deve ter no mínimo 3 caracteres")
-            .MaximumLength(150).WithMessage("Nome deve ter no máximo 150 caracteres");
-        // Validações em cascata para Endereco e Contatos
-    }
-}
-```
-- Validação em múltiplas camadas
-- Mensagens de erro claras e em português
-- Validação de coleções (múltiplos contatos)
-
-### 4. **Entity Framework Configurations**
-```csharp
-public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
-{
-    public void Configure(EntityTypeBuilder<Cliente> builder)
-    {
-        builder.HasOne(c => c.Endereco)
-            .WithOne(e => e.Cliente)
-            .HasForeignKey<Endereco>(e => e.ClienteId)
-            .OnDelete(DeleteBehavior.Cascade);
-        // ...
-    }
-}
-```
-- Configurações separadas por entidade (Fluent API)
-- Relacionamentos 1:1 e 1:N corretamente mapeados
-- Cascade Delete configurado adequadamente
-
-### 5. **Eager Loading**
-```csharp
-public async Task<Cliente?> ObterPorIdAsync(int id)
-{
-    return await _context.Clientes
-        .Include(c => c.Endereco)
-        .Include(c => c.Contatos)
-        .FirstOrDefaultAsync(c => c.Id == id);
-}
-```
-- Evita N+1 queries
-- Carregamento de relações de forma eficiente
-- Melhor performance
-
-### 6. **Nullable Reference Types**
-```csharp
-<Nullable>enable</Nullable>
-```
-- Projeto configurado com análise de nulabilidade
-- Código mais seguro, menos NullReferenceException
-- Contratos de API mais explícitos
-
 ---
 
 ## 📁 Estrutura do Projeto
@@ -339,105 +237,140 @@ Abra o navegador em: **`https://localhost:5051/swagger`** (a porta será exibida
 
 ---
 
-## Endpoints da API
+## 📸 Demonstração da API
 
-### Exemplo de Requisições
+A seguir, apresentamos os testes manuais realizados via **Swagger** para comprovar o funcionamento da API.
 
-#### **POST** `/api/clientes` - Criar Cliente
+> 💡 **Testes Completos Disponíveis**:  
+> - Collection Postman (JSON): [`docs/API Documentation.postman_collection.json`](./docs/API%20Documentation.postman_collection.json)  
+> - Workspace Online: [Acesse aqui](https://jula-6045524.postman.co/workspace/DesafioAPIMuralis~79caa53a-e507-4786-b389-1ea2f48f8a4b/collection/43586873-a1e5d9be-426f-4f12-a8f3-1f6e6fe1e890?action=share&creator=43586873)
 
-```json
+---
+
+### 1. 📝 Criação de Cliente (POST)
+**Regra Principal**: Ao enviar um novo cliente apenas com **CEP** e **Número**, a API consulta o **ViaCEP** e preenche automaticamente o **Logradouro** e a **Cidade** antes de salvar.
+
+**Endpoint**: `POST /api/clientes`
+
+![Criação de Cliente](./images/post.png)
+
+---
+
+### 2. 🔍 Consulta de Cliente (GET por ID)
+A consulta pelo ID do cliente criado retorna os dados completos, incluindo o **endereço preenchido automaticamente pelo ViaCEP**.
+
+**Endpoint**: `GET /api/clientes/{id}`
+
+![Consulta de Cliente](./images/get.png)
+
+---
+
+### 3. ✏️ Atualização de Cliente (PUT)
+A API permite a atualização dos dados de um cliente existente, mantendo a validação e integração com ViaCEP.
+
+**Endpoint**: `PUT /api/clientes/{id}`
+
+![Atualização de Cliente](./images/put.png)
+
+---
+
+### 4. 🗑️ Exclusão de Cliente (DELETE)
+A API permite a exclusão de um cliente pelo seu ID, removendo também seus endereços e contatos (cascade delete).
+
+**Endpoint**: `DELETE /api/clientes/{id}`
+
+![Exclusão de Cliente](./images/delete.png)
+
+
+---
+## Diferenciais Implementados
+
+### 1. **Integração com API Externa (ViaCEP)**
+```csharp
+// Preenchimento automático de endereço a partir do CEP
+public async Task<ViaCepResponseDTO?> ObterEnderecoPorCepAsync(string cep)
 {
-  "nome": "João Silva",
-  "endereco": {
-    "cep": "01310-100",
-    "numero": "1000",
-    "complemento": "Apto 101"
-  },
-  "contatos": [
-    {
-      "tipo": "Email",
-      "texto": "joao@example.com"
-    },
-    {
-      "tipo": "Telefone",
-      "texto": "(11) 98765-4321"
-    }
-  ]
+    var cepLimpo = cep.Replace("-", "").Trim();
+    var response = await _httpClient.GetAsync($"ws/{cepLimpo}/json/");
+    // ...
 }
 ```
+- HttpClient configurado como serviço tipado
+- Tratamento de erros e CEPs inválidos
+- Merge inteligente: dados do usuário têm prioridade sobre ViaCEP
 
-**Resposta** (201 Created):
-```json
+### 2. **Paginação de Resultados**
+```csharp
+public class PagedResultDTO<T>
 {
-  "id": 1,
-  "nome": "João Silva",
-  "dataCadastro": "2025-10-27T15:30:00.000Z",
-  "endereco": {
-    "id": 1,
-    "cep": "01310-100",
-    "logradouro": "Avenida Paulista",
-    "cidade": "São Paulo",
-    "numero": "1000",
-    "complemento": "Apto 101"
-  },
-  "contatos": [
-    {
-      "id": 1,
-      "tipo": "Email",
-      "texto": "joao@example.com"
-    },
-    {
-      "id": 2,
-      "tipo": "Telefone",
-      "texto": "(11) 98765-4321"
-    }
-  ]
+    public IEnumerable<T> Items { get; set; }
+    public int TotalItems { get; set; }
+    public int PageNumber { get; set; }
+    public int PageSize { get; set; }
+    public int TotalPages => (int)Math.Ceiling(TotalItems / (double)PageSize);
 }
 ```
+- Evita sobrecarga de dados
+- Cálculo automático de total de páginas
+- Parâmetros configuráveis via query string
 
-#### **GET** `/api/clientes?pagina=1&tamanhoPagina=10` - Listar Clientes
-
-**Resposta** (200 OK):
-```json
+### 3. **Validações Robustas**
+```csharp
+public class CriarClienteValidator : AbstractValidator<CriarClienteDTO>
 {
-  "items": [
+    public CriarClienteValidator()
     {
-      "id": 1,
-      "nome": "João Silva",
-      "dataCadastro": "2025-10-27T15:30:00.000Z",
-      "endereco": { ... },
-      "contatos": [ ... ]
+        RuleFor(x => x.Nome)
+            .NotEmpty().WithMessage("Nome é obrigatório")
+            .MinimumLength(3).WithMessage("Nome deve ter no mínimo 3 caracteres")
+            .MaximumLength(150).WithMessage("Nome deve ter no máximo 150 caracteres");
+        // Validações em cascata para Endereco e Contatos
     }
-  ],
-  "totalItems": 50,
-  "pageNumber": 1,
-  "pageSize": 10,
-  "totalPages": 5
 }
 ```
+- Validação em múltiplas camadas
+- Mensagens de erro claras e em português
+- Validação de coleções (múltiplos contatos)
 
-#### **PUT** `/api/clientes/1` - Atualizar Cliente
-
-```json
+### 4. **Entity Framework Configurations**
+```csharp
+public class ClienteConfiguration : IEntityTypeConfiguration<Cliente>
 {
-  "nome": "João Silva Santos",
-  "endereco": {
-    "cep": "01310-100",
-    "numero": "1000",
-    "complemento": "Apto 102"
-  },
-  "contatos": [
+    public void Configure(EntityTypeBuilder<Cliente> builder)
     {
-      "tipo": "Email",
-      "texto": "joao.santos@example.com"
+        builder.HasOne(c => c.Endereco)
+            .WithOne(e => e.Cliente)
+            .HasForeignKey<Endereco>(e => e.ClienteId)
+            .OnDelete(DeleteBehavior.Cascade);
+        // ...
     }
-  ]
 }
 ```
+- Configurações separadas por entidade (Fluent API)
+- Relacionamentos 1:1 e 1:N corretamente mapeados
+- Cascade Delete configurado adequadamente
 
-#### **DELETE** `/api/clientes/1` - Excluir Cliente
+### 5. **Eager Loading**
+```csharp
+public async Task<Cliente?> ObterPorIdAsync(int id)
+{
+    return await _context.Clientes
+        .Include(c => c.Endereco)
+        .Include(c => c.Contatos)
+        .FirstOrDefaultAsync(c => c.Id == id);
+}
+```
+- Evita N+1 queries
+- Carregamento de relações de forma eficiente
+- Melhor performance
 
-**Resposta** (204 No Content)
+### 6. **Nullable Reference Types**
+```csharp
+<Nullable>enable</Nullable>
+```
+- Projeto configurado com análise de nulabilidade
+- Código mais seguro, menos NullReferenceException
+- Contratos de API mais explícitos
 
 ---
 
